@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,12 +14,16 @@
             --success: #0f4c5b;
             --light: #f8f9fa;
             --dark: #212529;
-            --shadow: 0 10px 30px rgba(0,0,0,0.3);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             --border-radius: 12px;
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -26,7 +31,8 @@
             min-height: 100vh;
             color: var(--light);
             overflow-x: hidden;
-            padding-top: 80px; /* Space for fixed navbar */
+            padding-top: 80px;
+            /* Space for fixed navbar */
         }
 
         /* FIXED NAVBAR */
@@ -38,7 +44,7 @@
             backdrop-filter: blur(20px);
             z-index: 1000;
             padding: 1rem 0;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
         .nav-container {
@@ -114,18 +120,25 @@
         .customizer {
             max-width: 900px;
             margin: 2rem auto;
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(20px);
             border-radius: var(--border-radius);
             padding: 3rem;
             box-shadow: var(--shadow);
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             animation: slideIn 0.8s ease-out;
         }
 
         @keyframes slideIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         h1 {
@@ -146,16 +159,16 @@
         }
 
         .option-group {
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             padding: 1.5rem;
             border-radius: var(--border-radius);
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             transition: var(--transition);
         }
 
         .option-group:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
         }
 
         label {
@@ -166,25 +179,28 @@
             font-size: 1rem;
         }
 
-        select, textarea {
+        select,
+        textarea {
             width: 100%;
             padding: 1rem;
-            background: rgba(255,255,255,0.95);
-            border: 2px solid rgba(255,255,255,0.3);
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid rgba(255, 255, 255, 0.3);
             border-radius: 8px;
             font-size: 16px;
             color: var(--dark);
         }
 
-        select:focus, textarea:focus {
+        select:focus,
+        textarea:focus {
             border-color: var(--accent);
             outline: none;
         }
 
-        textarea { 
-            resize: vertical; 
+        textarea {
+            resize: vertical;
             min-height: 100px;
-            grid-column: 1 / -1; /* Full width */
+            grid-column: 1 / -1;
+            /* Full width */
         }
 
         /* PREVIEW - FIXED */
@@ -223,32 +239,47 @@
 
         .build-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(233,69,96,0.4);
+            box-shadow: 0 10px 25px rgba(233, 69, 96, 0.4);
         }
 
         /* SUMMARY */
         #summary {
             margin-top: 2rem;
             padding: 2rem;
-            background: rgba(15,76,91,0.9);
+            background: rgba(15, 76, 91, 0.9);
             border-radius: var(--border-radius);
             display: none;
         }
 
         /* MOBILE RESPONSIVE */
         @media (max-width: 768px) {
-            .mobile-menu { display: flex; }
-            .nav-links { display: none; }
-            
-            .customizer { margin: 1rem; padding: 1.5rem; }
-            .options-grid { grid-template-columns: 1fr; gap: 1rem; }
+            .mobile-menu {
+                display: flex;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .customizer {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
         }
 
         @media (max-width: 480px) {
-            .nav-container { padding: 0 1rem; }
+            .nav-container {
+                padding: 0 1rem;
+            }
         }
     </style>
 </head>
+
 <body>
     <!-- FIXED NAVBAR -->
     <nav class="navbar">
@@ -351,46 +382,63 @@
             <textarea id="description" placeholder="Add special notes about your custom guitar..."></textarea>
         </div>
         <br>
-        <button class="btn btn-primary" onclick="generateSummary()" style="font-size: 1.3rem; padding: 22px 60px; border-radius: 20px;">Build</button>
-        
+        <button class="btn btn-primary" onclick="generateSummary();postGuitarBuild();" id="buildBtn"
+            style="font-size: 1.3rem; padding: 22px 60px; border-radius: 20px;">Build</button>
+
         <div id="summary" style="margin-top: 20px; padding: 20px; border-radius: 5px; display: none;"></div>
     </div>
 
     <script>
-        const selects = document.querySelectorAll('select, textarea');
-        selects.forEach(el => {
-            el.addEventListener('change', updatePreview);
-            el.addEventListener('input', updatePreview);
+        document.addEventListener('DOMContentLoaded', function () {
+            const buildBtn = document.getElementById('buildBtn');
+            const statusDiv = document.getElementById('buildStatus');
+
+            // Preview functionality (unchanged)
+            const selects = document.querySelectorAll('select, textarea');
+            selects.forEach(el => {
+                el.addEventListener('change', updatePreview);
+                el.addEventListener('input', updatePreview);
+            });
         });
 
-        function updatePreview() {
-            const shape = document.getElementById('shape').value;
-            const color = document.getElementById('color').value;
-            const headstock = document.getElementById('headstock').value;
-            const fretboard = document.getElementById('fretboard').value;
-            const bodywood = document.getElementById('bodywood').value;
-            const pickup = document.getElementById('pickup').value;
-            const hardware = document.getElementById('hardware').value;
+        // **BUILD BUTTON = POST TO SERVER**
 
-            const preview = document.getElementById('preview');
-            preview.innerHTML = `
-                <strong>${shape} Custom Guitar</strong><br>
-                Color: ${color}<br>
-                Headstock: ${headstock}<br>
-                Fretboard: ${fretboard}<br>
-                Body Wood: ${bodywood}<br>
-                Pickups: ${pickup}<br>
-                Hardware: ${hardware}
-            `;
-            // Simulate color change
-            const colorMap = {
-                'Sunburst': '#D4A017', 'Black': '#333', 'White': '#F0F0F0',
-                'Seafoam Green': '#9FE09F', 'Surf Green': '#C5E7C9',
-                'Natural': '#DEB887', 'Cherry Red': '#C41E3A'
+        function postGuitarBuild() {
+            const guitarData = {
+                shape: document.getElementById('shape').value,
+                color: document.getElementById('color').value,
+                headstock: document.getElementById('headstock').value,
+                fretboard: document.getElementById('fretboard').value,
+                bodywood: document.getElementById('bodywood').value,
+                pickup: document.getElementById('pickup').value,
+                hardware: document.getElementById('hardware').value,
+                description: document.getElementById('description').value
             };
-            preview.style.background = colorMap[color] || '#ddd';
-            preview.style.color = color === 'White' ? '#333' : '#000';
+
+            const buildBtn = document.getElementById('buildBtn');
+            buildBtn.disabled = true;
+
+            fetch('/customize', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(guitarData)
+            })
+                .then(response => response.json())
+                .then(result => {
+                    // Success message
+                    document.getElementById('buildStatus').innerHTML = '✅ Saved!';
+                    document.getElementById('buildStatus').style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('buildStatus').innerHTML = '❌ Error!';
+                })
+                .finally(() => {
+                    buildBtn.textContent = 'Build';
+                    buildBtn.disabled = false;
+                });
         }
+
 
         function generateSummary() {
             const specs = {
@@ -421,6 +469,8 @@
             summary.style.display = 'block';
             summary.scrollIntoView({ behavior: 'smooth' });
         }
+
     </script>
 </body>
+
 </html>
