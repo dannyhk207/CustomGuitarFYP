@@ -56,8 +56,7 @@ const guitarPricing = {
         'Gold Foil': 199
     }
 };
-//create account
-//curl -X POST -H "Content-Type: application/json" -d "{\"name\": \"test\", \"gender\": \"male\", \"email\":\"test@example.com\", \"password\":\"secret123\", \"telephone\":\"+85212345678\", \"birth\":\"1990-01-01\", \"streak\":0, \"medicine\": [{\"name\": \"meds0\", \"dosage\": \"10mg\", \"frequency\": \"twice daily\", \"time\": [\"08:00\", \"20:00\"]}, {\"name\": \"meds4\", \"dosage\": \"20mg\", \"frequency\": \"once daily\", \"time\": [\"18:00\"]}]}" http://localhost:8099/api
+
 app.get("/", async (req, res, next) => {
     res.render("home");
 });
@@ -69,9 +68,13 @@ app.get('/contact', (req, res) => {
     res.render('contact');
 });
 app.post("/customize", async (req, res, next) => {
-    res.render("customize");
+    console.log('Guitar Build Received:', req.body);
+    res.json({ 
+        success: true, 
+        message: 'Build specs saved!', 
+        data: req.body 
+    });
 });
-
 
 //port
 app.listen(process.env.PORT || 8099);
