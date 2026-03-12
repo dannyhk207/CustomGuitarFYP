@@ -11,10 +11,12 @@
     "body-parser": "*",
     "ejs": "*",
     "express": "*",
-    "express-session": "*"
+    "express-session": "*",
+    "nodemailer": "*"
   },
   "devDependencies": {
     "nodemon": "*"
   },
   "author": "Danny"
+
 }
