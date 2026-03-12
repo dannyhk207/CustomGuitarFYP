@@ -1,7 +1,6 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
 const app = express();
-
 const bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
@@ -79,4 +78,4 @@ app.post("/customize", async (req, res, next) => {
 });
 
 //port
-app.listen(process.env.PORT || 8099);
+app.listen(process.env.PORT);
