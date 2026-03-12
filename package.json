@@ -12,7 +12,7 @@
     "ejs": "*",
     "express": "*",
     "express-session": "*",
-    "nodemailer": "*".
+    "nodemailer": "*",
     "dotenv": "*"
   },
   "devDependencies": {
@@ -21,4 +21,5 @@
   "author": "Danny"
 
 }
+
 
