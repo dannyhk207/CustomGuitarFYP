@@ -303,7 +303,7 @@
         <h1>🎸 Custom Guitar Builder</h1>
 
         <div class="option-group">
-            <label for="shape">Body Shape:</label>
+            <label for="shape">Guitar Style:</label>
             <select id="shape">
                 <option value="Telecaster">Telecaster</option>
                 <option value="Flying-V">Flying-V</option>[web:1][web:8]
@@ -316,14 +316,6 @@
                 <option value="Black">Black</option>
                 <option value="White">White</option>
                 <option value="Blue">Blue</option>[web:2][web:9]
-            </select>
-        </div>
-        <br>
-        <div class="option-group">
-            <label for="headstock">Headstock:</label>
-            <select id="headstock">
-                <option value="Fender S-Style">Fender S-Style</option>
-                <option value="Blade">Blade</option>[web:3][web:10]
             </select>
         </div>
         <br>
@@ -342,21 +334,13 @@
                 <option value="Maple">Maple</option>[web:5]
             </select>
         </div>
-        <br>
-        <div class="option-group">
-            <label for="pickup">Pickups:</label>
-            <select id="pickup">
-                <option value="Single Coil">Single Coil (clear, bright)</option>
-                <option value="Humbucker">Humbucker (thick, hum-free)</option>[web:6]
-            </select>
-        </div>
+
         <br>
         <div class="option-group">
             <label for="hardware">Hardware Color:</label>
             <select id="hardware">
                 <option value="Sliver">Sliver</option>
-                <option value="Gold">Gold</option>
-                <option value="Black">Black</option>[web:7]
+                <option value="Gold">Gold</option>[web:7]
             </select>
         </div>
         <br>
@@ -365,24 +349,74 @@
             <textarea id="description" placeholder="Add special notes about your custom guitar..."></textarea>
         </div>
         <br>
-        <button class="btn btn-primary" onclick="generateSummary();postGuitarBuild();" id="buildBtn"
-            style="font-size: 1.3rem; padding: 22px 60px; border-radius: 20px;">Build</button>
+        <button class="btn btn-primary" onclick="generateSummary();updatePreview();" id="previewBtn"
+            style="font-size: 1.3rem; padding: 22px 60px; border-radius: 20px;">Preview</button>
 
         <div id="summary" style="margin-top: 20px; padding: 20px; border-radius: 5px; display: none;"></div>
+
+        <div id="previewPic"
+            style="margin-top: 20px; padding: 20px; border-radius: 5px; text-align: center; min-height: 200px; display: none;">
+            <img id="previewImage" style="width: 100%; max-width: 400px; border-radius: 10px; display: none;"
+                alt="Guitar preview">
+        </div>
+
+        <button class="btn btn-primary" onclick="postGuitarBuild()" id="sendBtn"
+            style="font-size: 1.3rem; padding: 22px 60px; border-radius: 20px;">Send Request</button>
+
+
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const buildBtn = document.getElementById('buildBtn');
-            const statusDiv = document.getElementById('buildStatus');
+            const sendBtn = document.getElementById('sendBtn');
+            const previewBtn = document.getElementById('previewBtn');
+            const pickupSelect = document.getElementById('pickup');
+            const shapeSelect = document.getElementById('shape');
+            const previewPic = document.getElementById('previewPic');
+            const previewImage = document.getElementById('previewImage');
 
-            // Preview functionality (unchanged)
+
+            // Initialize conditional logic
+            updatePickupOptions();
+
+            // Listen for shape changes to update pickup options
+            shapeSelect.addEventListener('change', updatePickupOptions);
+            shapeSelect.addEventListener('change', updatePreview);
+
+            // Preview functionality for all selects
             const selects = document.querySelectorAll('select, textarea');
             selects.forEach(el => {
                 el.addEventListener('change', updatePreview);
                 el.addEventListener('input', updatePreview);
             });
+
+            const filename = getImageFilename(shape, color, hardware);
+            previewImage.src = filename;
+            previewImage.style.display = 'block';
+            previewPic.style.display = 'block';
+            previewPic.scrollIntoView({ behavior: 'smooth' });
         });
+
+
+        function updatePreview() {
+            const previewPic = document.getElementById('previewPic');
+            const previewImage = document.getElementById('previewImage');  // Reference the img INSIDE div
+            const shape = document.getElementById('shape').value;
+            const hardware = document.getElementById('hardware').value;
+            const color = document.getElementById('color').value;
+
+            // Generate correct filename
+            const prefix = shape === 'Telecaster' ? 't' : 'v';
+            const hw = hardware === 'Sliver' ? 'Sliver' : 'Gold';
+            const filename = `/${prefix}-${color.toLowerCase()}-${hw}.png`;
+
+            // SET SRC on the existing img element (don't destroy it!)
+            previewImage.src = filename;
+            previewImage.style.display = 'block';
+            previewPic.style.display = 'block';
+            previewPic.scrollIntoView({ behavior: 'smooth' });
+        }
+
 
         // **BUILD BUTTON = POST TO SERVER**
 
@@ -390,16 +424,14 @@
             const guitarData = {
                 shape: document.getElementById('shape').value,
                 color: document.getElementById('color').value,
-                headstock: document.getElementById('headstock').value,
                 fretboard: document.getElementById('fretboard').value,
                 bodywood: document.getElementById('bodywood').value,
-                pickup: document.getElementById('pickup').value,
                 hardware: document.getElementById('hardware').value,
                 description: document.getElementById('description').value
             };
 
-            const buildBtn = document.getElementById('buildBtn');
-            buildBtn.disabled = true;
+            const sendBtn = document.getElementById('sendBtn');
+            sendBtn.disabled = true;
 
             fetch('/customize', {
                 method: 'POST',
@@ -417,8 +449,8 @@
                     document.getElementById('buildStatus').innerHTML = '❌ Error!';
                 })
                 .finally(() => {
-                    buildBtn.textContent = 'Build';
-                    buildBtn.disabled = false;
+                    sendBtn.textContent = 'Build';
+                    sendBtn.disabled = false;
                 });
         }
 
@@ -427,10 +459,8 @@
             const specs = {
                 shape: document.getElementById('shape').value,
                 color: document.getElementById('color').value,
-                headstock: document.getElementById('headstock').value,
                 fretboard: document.getElementById('fretboard').value,
                 bodywood: document.getElementById('bodywood').value,
-                pickup: document.getElementById('pickup').value,
                 hardware: document.getElementById('hardware').value,
                 description: document.getElementById('description').value
             };
@@ -440,10 +470,8 @@
                 <h3>Your Custom Guitar Specs:</h3>
                 <ul>
                     <li>${specs.shape} Body - ${specs.color}</li>
-                    <li>${specs.headstock} Headstock</li>
                     <li>${specs.fretboard}</li>
                     <li>${specs.bodywood}</li>
-                    <li>${specs.pickup}</li>
                     <li>${specs.hardware} Hardware</li>
                     ${specs.description ? `<li>Notes: ${specs.description}</li>` : ''}
                 </ul>
@@ -457,4 +485,3 @@
 </body>
 
 </html>
-
