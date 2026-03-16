@@ -451,10 +451,6 @@
                     console.error('Error:', error);
                     document.getElementById('buildStatus').innerHTML = '❌ Error!';
                 })
-                .finally(() => {
-                    sendBtn.textContent = 'Build';
-                    sendBtn.disabled = false;
-                });
         }
 
 
