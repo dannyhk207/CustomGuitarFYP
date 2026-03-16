@@ -345,7 +345,9 @@
         </div>
         <br>
         <div class="option-group">
-            <label for="description">Description (Optional):</label>
+            <label for="description">Description:</label>
+            <input type="checkbox" id="Special Design" name="Special Design" value="Special Design">Special Design</input>
+            <label></label>
             <textarea id="description" placeholder="Add special notes about your custom guitar..."></textarea>
         </div>
         <br>
@@ -427,7 +429,8 @@
                 fretboard: document.getElementById('fretboard').value,
                 bodywood: document.getElementById('bodywood').value,
                 hardware: document.getElementById('hardware').value,
-                description: document.getElementById('description').value
+                description: document.getElementById('description').value,
+                specialDesign: document.getElementById('Special Design').checked ? 'Yes' : 'No' 
             };
 
             const sendBtn = document.getElementById('sendBtn');
@@ -462,7 +465,8 @@
                 fretboard: document.getElementById('fretboard').value,
                 bodywood: document.getElementById('bodywood').value,
                 hardware: document.getElementById('hardware').value,
-                description: document.getElementById('description').value
+                description: document.getElementById('description').value,
+                specialDesign: document.getElementById('Special Design').checked ? 'Yes' : 'No'
             };
 
             const summary = document.getElementById('summary');
@@ -474,6 +478,7 @@
                     <li>${specs.bodywood}</li>
                     <li>${specs.hardware} Hardware</li>
                     ${specs.description ? `<li>Notes: ${specs.description}</li>` : ''}
+                    <li>Special Design: ${specs.specialDesign}</li>
                 </ul>
                 <p><em>Ready to order? Contact us!</em></p>
             `;
