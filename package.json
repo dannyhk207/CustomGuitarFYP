@@ -13,7 +13,8 @@
     "express": "*",
     "express-session": "*",
     "nodemailer": "*",
-    "dotenv": "*"
+    "dotenv": "*",
+    "multer": "*"
   },
   "devDependencies": {
     "nodemon": "*"
