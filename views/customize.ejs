@@ -433,34 +433,42 @@
         // **BUILD BUTTON = POST TO SERVER**
 
         function postGuitarBuild() {
-            const guitarData = {
-                shape: document.getElementById('shape').value,
-                color: document.getElementById('color').value,
-                fretboard: document.getElementById('fretboard').value,
-                bodywood: document.getElementById('bodywood').value,
-                hardware: document.getElementById('hardware').value,
-                description: document.getElementById('description').value,
-                specialDesign: document.getElementById('Special Design').checked ? 'Yes' : 'No' 
-            };
+            const formData = new FormData();
 
+            formData.append('shape', document.getElementById('shape').value);
+            formData.append('color', document.getElementById('color').value);
+            formData.append('fretboard', document.getElementById('fretboard').value);
+            formData.append('bodywood', document.getElementById('bodywood').value);
+            formData.append('hardware', document.getElementById('hardware').value);
+            formData.append('description', document.getElementById('description').value);
+            formData.append('specialDesign', document.getElementById('Special Design').checked ? 'Yes' : 'No');
+        
+            const fileInput = document.getElementById('imageUpload');
+            if (fileInput.files.length > 0) {
+                formData.append('imageUpload', fileInput.files[0]);
+            }
+        
             const sendBtn = document.getElementById('sendBtn');
             sendBtn.disabled = true;
-
+        
             fetch('/customize', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(guitarData)
+                body: formData
             })
-                .then(response => response.json())
-                .then(result => {
-                    // Success message
-                    document.getElementById('buildStatus').innerHTML = '✅ Saved!';
-                    document.getElementById('buildStatus').style.display = 'block';
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    document.getElementById('buildStatus').innerHTML = '❌ Error!';
-                })
+            .then(response => response.json())
+            .then(result => {
+                const status = document.getElementById('buildStatus');
+                status.innerHTML = '✅ Saved!';
+                status.style.display = 'block';
+                sendBtn.disabled = false;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                const status = document.getElementById('buildStatus');
+                status.innerHTML = '❌ Error!';
+                status.style.display = 'block';
+                sendBtn.disabled = false;
+            });
         }
 
 
